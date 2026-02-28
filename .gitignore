@@ -1,0 +1,14 @@
+data/
+outputs/
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+.DS_Store
+Thumbs.db
+.pytest_cache/
+.mypy_cache/
+.cache/
