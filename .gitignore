@@ -14,5 +14,8 @@ Thumbs.db
 .cache/
 .jj
 
+# Where built python wheels go
+dist
+
 input-data
 output-data
