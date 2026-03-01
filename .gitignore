@@ -12,3 +12,7 @@ Thumbs.db
 .pytest_cache/
 .mypy_cache/
 .cache/
+.jj
+
+input-data
+output-data
