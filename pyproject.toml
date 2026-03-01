@@ -11,7 +11,7 @@ dependencies = [
 ]
 
 [project.scripts]
-ingest-lfw = "msml605.scripts:ingest_lfw"
+ingest-lfw = "msml605.scripts.ingest_lfw:main"
 
 [build-system]
 requires = ["uv_build>=0.10.7,<0.11.0"]
