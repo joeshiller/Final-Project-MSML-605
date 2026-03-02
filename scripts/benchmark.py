@@ -20,9 +20,16 @@ def cosine_sim(a, b):
     return sum / mags
 
 
-def euclidan_sim(a: list[float], b: list[float]):
-    pass
-
+def eucliden_sim(a,b):
+    total = 0
+    for x in range(a.shape[0]):
+        for y in range(a.shape[1]):
+            diff = a[x, y] - b[x, y]
+            total += diff * diff
+    return total**0.5
+   
+            
+        
 
 def main():
     logger.info("Hello from benchmark.py")
