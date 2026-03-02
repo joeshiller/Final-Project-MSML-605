@@ -74,4 +74,12 @@ def split_dataset(df: pd.DataFrame):
     logger.debug(
         f"sum of everything : {sum([len(train_df), len(val_df), len(test_df)])}"
     )
+
+    train_df.to_csv("outputs/train_identities.csv", index=False)
+    val_df.to_csv("outputs/val_identities.csv", index=False)
+    test_df.to_csv("outputs/test_identities.csv", index=False)
     return (train_df, val_df, test_df)
+
+
+
+    
