@@ -29,12 +29,6 @@ Split the dataset.
 uv run scripts/make_pairs.py
 ```
 
-## Run `similarity`
-Show how similar these random pairs are.
-```sh
-uv run scripts/similarity.py
-```
-
 ## Run `benchmark`
 Show that Numpy is faster than Python.
 ```sh
