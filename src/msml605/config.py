@@ -3,8 +3,8 @@ from pathlib import Path
 SEED = 123
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DATA_DIR = PROJECT_ROOT / "data"
-OUTPUTS_DIR = PROJECT_ROOT / "outputs"
+INPUT_DIR = PROJECT_ROOT / "input-data"
+OUTPUTS_DIR = PROJECT_ROOT / "output-data"
 
 PAIR_POLICY = {
     "train": {"num_pos": 1000, "num_neg": 1000},

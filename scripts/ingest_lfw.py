@@ -1,19 +1,22 @@
+from pathlib import Path
+
 from loguru import logger
 
 # from msml605.load_data import download_dataset
-from msml605 import load_data, manifest
+from msml605 import config, load_data, manifest
 
 
 def main():
     logger.info("Starting LFW ingestion")
     hugging_face_handle = "jessicali9530/lfw-dataset"
-    input_dir = "input-data"
-    output_dir = "output-data"
+    input_dir = config.INPUT_DIR
+    output_dir = config.OUTPUTS_DIR
     load_data.download_dataset(hugging_face_handle, input_dir)
     raw = load_data.load_dataset(input_dir)
     train, val, test = load_data.split_dataset(raw, output_dir)
 
-    seed = 1234
+    seed = config.SEED
+    input_path_relative = str(Path(input_dir).relative_to(config.PROJECT_ROOT))
     man = manifest.Manifest(
         seed=seed,
         split_policy="identity",
@@ -32,7 +35,7 @@ def main():
             ],
         ],
         data_source=manifest.DataSource(
-            url=hugging_face_handle, version="kagglehub", cache_dir=input_dir
+            url=hugging_face_handle, version="kagglehub", cache_dir=input_path_relative
         ),
     )
 

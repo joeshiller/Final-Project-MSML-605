@@ -1,5 +1,6 @@
 import itertools
 import math
+import os
 
 # Install dependencies as needed:
 # pip install kagglehub[pandas-datasets]
@@ -71,6 +72,9 @@ def split_dataset(df: pd.DataFrame, output_dir: str):
     logger.debug(
         f"sum of everything : {sum([len(train_df), len(val_df), len(test_df)])}"
     )
+
+    # Create all directories up to the file.
+    os.makedirs(output_dir, exist_ok=True)
 
     train_df.to_csv(f"{output_dir}/train_identities.csv", index=False)
     val_df.to_csv(f"{output_dir}/val_identities.csv", index=False)
