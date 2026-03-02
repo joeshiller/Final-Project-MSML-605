@@ -20,7 +20,7 @@ def cosine_sim(a, b):
     return sum / mags
 
 
-def eucliden_sim(a,b):
+def euclidean_sim(a,b):
     total = 0
     for x in range(a.shape[0]):
         for y in range(a.shape[1]):
@@ -49,6 +49,14 @@ def main():
     end = time.perf_counter()
     cosine_python_dt = end - start
     logger.info(f"cosine sim - python - {cosine_python_dt:.6f}")
+
+    logger.info("euclidean sim - python")
+    start = time.perf_counter()
+    euclidean_python = euclidean_sim(random_floats_a, random_floats_b)
+    end = time.perf_counter()
+    euclidean_python_dt = end - start
+    logger.info(f"euclidean sim - python - {euclidean_python_dt:.6f}")
+    logger.info(f"euclidean value - {euclidean_python}")
 
 
 if __name__ == "__main__":
