@@ -3,15 +3,12 @@ name = "msml605"
 version = "0.1.0"
 description = "The final project for MSML 605."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
+    "kagglehub[pandas-datasets]>=1.0.0",
     "loguru>=0.7.3",
-    "mlcroissant>=1.0.22",
-    "numpy>=2.2.6",
+    "pandas>=2.3.3",
 ]
-
-[project.scripts]
-ingest-lfw = "msml605.scripts.ingest_lfw:main"
 
 [build-system]
 requires = ["uv_build>=0.10.7,<0.11.0"]

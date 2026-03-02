@@ -6,7 +6,6 @@
   {
     "label": "debug",
     "adapter": "Debugpy",
-    "module": "msml605",
     "program": "${ZED_FILE}",
     "request": "launch",
   },
