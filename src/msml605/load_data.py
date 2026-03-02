@@ -31,15 +31,15 @@ def download_dataset(hugging_face_handle: str, output_dir: str):
     # _ = kagglehub.dataset_download("jessicali9530/lfw-dataset", output_dir="input-data")
 
 
-def load_dataset():
-    file_name = "input-data/lfw_allnames.csv"
+def load_dataset(input_dir: str):
+    file_name = f"{input_dir}/lfw_allnames.csv"
     df = pd.read_csv(file_name).sort_values(by=["name", "images"])
     logger.debug(df.head())
     logger.debug(f"dataset is {len(df)} long.")
     return df
 
 
-def split_dataset(df: pd.DataFrame):
+def split_dataset(df: pd.DataFrame, output_dir: str):
     # split policy is hard-coded as per-identity.
     #
     #  train/val/test
@@ -71,4 +71,8 @@ def split_dataset(df: pd.DataFrame):
     logger.debug(
         f"sum of everything : {sum([len(train_df), len(val_df), len(test_df)])}"
     )
+
+    train_df.to_csv(f"{output_dir}/train_identities.csv", index=False)
+    val_df.to_csv(f"{output_dir}/val_identities.csv", index=False)
+    test_df.to_csv(f"{output_dir}/test_identities.csv", index=False)
     return (train_df, val_df, test_df)
