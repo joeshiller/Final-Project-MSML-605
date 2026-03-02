@@ -1,9 +1,16 @@
+from math import sqrt
+
 import numpy as np
 from loguru import logger
 
 
+def mag(a: list[float]) -> float:
+    return sqrt(sum(x**2 for x in a))
+
+
 def cosine_sim(a: list[float], b: list[float]):
-    pass
+    dot = sum(a * b for a, b in zip(a, b))
+    return dot / (mag(a) * mag(b))
 
 
 def euclidan_sim(a: list[float], b: list[float]):
