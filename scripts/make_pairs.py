@@ -6,7 +6,9 @@ from pathlib import Path
 
 from loguru import logger
 
-from msml605.config import OUTPUTS_DIR, PAIR_POLICY, SEED
+from msml605 import config
+
+# from msml605.config import OUTPUTS_DIR, PAIR_POLICY, SEED
 
 
 def read_split_csv(path):
@@ -103,9 +105,9 @@ def write_pairs_csv(path, rows):
         writer.writerows(rows)
 
 
-def generate_pairs_for_split(split):
-    input_path = OUTPUTS_DIR / f"{split}_identities.csv"
-    output_path = OUTPUTS_DIR / f"pairs_{split}.csv"
+def generate_pairs_for_split(pair_policy, output_dir, seed, split):
+    input_path = output_dir / f"{split}_identities.csv"
+    output_path = output_dir / f"pairs_{split}.csv"
 
     raw_rows = read_split_csv(input_path)
     expanded_rows = expand_count_rows_to_paths(raw_rows)
@@ -114,16 +116,16 @@ def generate_pairs_for_split(split):
     pos_candidates = build_positive_candidates(identity_to_images)
     neg_candidates = build_negative_candidates(identity_to_images)
 
-    rng = random.Random(SEED)
+    rng = random.Random(seed)
 
     pos_pairs = sample_candidates(
         pos_candidates,
-        PAIR_POLICY[split]["num_pos"],
+        pair_policy[split]["num_pos"],
         rng,
     )
     neg_pairs = sample_candidates(
         neg_candidates,
-        PAIR_POLICY[split]["num_neg"],
+        pair_policy[split]["num_neg"],
         rng,
     )
 
@@ -152,17 +154,22 @@ def generate_pairs_for_split(split):
     return {
         "split": split,
         "num_pairs": len(all_rows),
-        "num_pos": PAIR_POLICY[split]["num_pos"],
-        "num_neg": PAIR_POLICY[split]["num_neg"],
+        "num_pos": pair_policy[split]["num_pos"],
+        "num_neg": pair_policy[split]["num_neg"],
     }
 
 
 def main():
     logger.info("Starting deterministic pair generation")
 
+    cfg = config.load_config(config.config_path)
     summaries = []
     for split in ["train", "val", "test"]:
-        summaries.append(generate_pairs_for_split(split))
+        summaries.append(
+            generate_pairs_for_split(
+                cfg.pair_policy, Path(cfg.output_dir), cfg.seed, split
+            )
+        )
 
     for summary in summaries:
         logger.info(summary)
