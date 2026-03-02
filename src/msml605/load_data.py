@@ -14,12 +14,8 @@ from kagglehub import KaggleDatasetAdapter
 # import tensorflow_datasets as tfds
 from loguru import logger
 
-SEED = 123
 
-
-def download_dataset(
-    # croissant_url: str = "https://www.kaggle.com/datasets/jessicali9530/lfw-dataset/croissant/download",
-):
+def download_dataset(hugging_face_handle: str, output_dir: str):
     # Fetch the Croissant JSON-LD
     # croissant_dataset = mlc.Dataset(croissant_url)
 
@@ -31,7 +27,8 @@ def download_dataset(
     # # Set the path to the file you'd like to load
     # for set in record_sets:
     #  Load the latest version
-    _ = kagglehub.dataset_download("jessicali9530/lfw-dataset", output_dir="input-data")
+    _ = kagglehub.dataset_download(hugging_face_handle, output_dir=output_dir)
+    # _ = kagglehub.dataset_download("jessicali9530/lfw-dataset", output_dir="input-data")
 
 
 def load_dataset():
