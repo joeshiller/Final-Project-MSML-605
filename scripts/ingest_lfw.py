@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from loguru import logger
-
+import uuid
 # from msml605.load_data import download_dataset
 from msml605 import config, load_data, manifest
 
@@ -16,7 +16,8 @@ def main():
 
     seed = cfg.seed
     # input_path_relative = str(Path(cfg.input_dir).relative_to(config.PROJECT_ROOT))
-    man = manifest.Manifest(
+    man = manifest.DataManifest(
+        id = uuid.uuid4()
         seed=seed,
         split_policy="identity",
         counts=[
