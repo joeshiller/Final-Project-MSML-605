@@ -17,7 +17,12 @@ class Config(BaseModel):
     seed: int
     input_dir: str
     output_dir: str
+    run_dir: str
+    "Within the `Config.output_dir`."
     pair_policy: dict[str, dict[str, int]]
+
+    def get_run_dir(self) -> Path:
+        return Path(self.output_dir) / self.run_dir
 
 
 # SEED = 123

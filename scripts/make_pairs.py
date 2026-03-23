@@ -8,8 +8,6 @@ from loguru import logger
 
 from msml605 import config
 
-# from msml605.config import OUTPUTS_DIR, PAIR_POLICY, SEED
-
 
 def read_split_csv(path):
     rows = []

@@ -11,10 +11,14 @@ class DataSource(BaseModel):
     cache_dir: str
 
 
+def get_dataset_fingerprint():
+    return hashlib.sha256(b"todo: fix this!")  # TODO: fix this!
+
+
 class DataManifest(BaseModel):
     "Description of how the data was generated."
 
-    fingerprint = get_dataset_fingerprint()
+    fingerprint: str = get_dataset_fingerprint().hexdigest()
     "Hash of all files in our dataset (csv file + referenced data [face images])."
     # Note: does not contain mainifest file.
 
@@ -27,10 +31,6 @@ class DataManifest(BaseModel):
     ]  # like [[3 names, 3 images] in train, [4names, 5images] in validation, and [10 names, 10 images] in test]
 
     data_source: DataSource
-
-
-def get_dataset_fingerprint():
-    return hashlib.sha256(b"todo: fix this!")  # TODO: fix this!
 
 
 def write_manifest(manifest: DataManifest, out_file_path: str):
