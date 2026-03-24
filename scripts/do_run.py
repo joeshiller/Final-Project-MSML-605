@@ -1,9 +1,6 @@
-import uuid
-from pathlib import Path
-
 from loguru import logger
 
-from msml605 import config, load_data, run
+from msml605 import config, run
 
 
 def main():
