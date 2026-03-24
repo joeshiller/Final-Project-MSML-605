@@ -1,3 +1,4 @@
+import glob
 import hashlib
 import os
 from pathlib import Path
@@ -16,7 +17,10 @@ class DataSource(BaseModel):
     "Hash of the data files from the Internet"
 
     def __init__(self, /, **data: Any) -> None:
+        # Python syntax: `**data` captures all kwargs (keyword arguments) as a dictionary.
         data["fingerprint"] = get_fingerprint_of_dir(data["cache_dir"]).hexdigest()
+
+        # Call the super class (Pydantic's DataModel) with the dictionary `data` spread out as kwargs for `__init__`.
         super().__init__(**data)
 
 
@@ -43,11 +47,22 @@ def get_fingerprint_of_dir(dir: Path):
     return hash
 
 
+def get_fingerprint_of_file(file: Path, hash) -> None:
+    # TODO: I don't know how to buffer with 'open' properly lol.
+    # 65536 = 64KiB = 2^16 bytes.
+    with open(file, "rb", buffering=65536) as f:
+        while True:
+            data = f.read(65536)
+            if not data:
+                break
+            hash.update(data)
+
+
 class DataManifest(BaseModel):
     "Description of how the data was generated."
 
-    # fingerprint: str
-    # "Hash of all files in our dataset (csv file + referenced data [face images])."
+    fingerprint: str
+    "Hash of CSV files (*_identities.csv) (SHA256)."
     # Note: does not contain mainifest file.
 
     seed: int
@@ -59,6 +74,17 @@ class DataManifest(BaseModel):
     ]  # like [[3 names, 3 images] in train, [4names, 5images] in validation, and [10 names, 10 images] in test]
 
     data_source: DataSource
+
+    def __init__(self, config: msml605.config.Config, /, **data: Any) -> None:
+        # Get the CSVs in the dir.
+        out_dir = config.output_dir
+        csvs = glob.glob(f"{out_dir}/*.csv")
+        hash = hashlib.sha256()
+        for csv in csvs:
+            get_fingerprint_of_file(csv, hash)
+        data["fingerprint"] = hash.hexdigest()
+
+        super().__init__(**data)
 
 
 def write_manifest(manifest: DataManifest, out_file_path: str):
