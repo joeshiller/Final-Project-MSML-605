@@ -16,7 +16,6 @@ def main():
 
     seed = cfg.seed
     man = manifest.DataManifest(
-        cfg,
         id=uuid.uuid4(),
         seed=seed,
         split_policy="identity",

@@ -47,23 +47,8 @@ def get_fingerprint_of_dir(dir: Path):
     return hash
 
 
-def get_fingerprint_of_file(file: Path, hash) -> None:
-    # TODO: I don't know how to buffer with 'open' properly lol.
-    # 65536 = 64KiB = 2^16 bytes.
-    with open(file, "rb", buffering=65536) as f:
-        while True:
-            data = f.read(65536)
-            if not data:
-                break
-            hash.update(data)
-
-
 class DataManifest(BaseModel):
     "Description of how the data was generated."
-
-    fingerprint: str
-    "Hash of CSV files (*_identities.csv) (SHA256)."
-    # Note: does not contain mainifest file.
 
     seed: int
 
@@ -75,14 +60,7 @@ class DataManifest(BaseModel):
 
     data_source: DataSource
 
-    def __init__(self, config: msml605.config.Config, /, **data: Any) -> None:
-        # Get the CSVs in the dir.
-        out_dir = config.output_dir
-        csvs = glob.glob(f"{out_dir}/*.csv")
-        hash = hashlib.sha256()
-        for csv in csvs:
-            get_fingerprint_of_file(csv, hash)
-        data["fingerprint"] = hash.hexdigest()
+    def __init__(self, /, **data: Any) -> None:
 
         super().__init__(**data)
 
