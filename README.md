@@ -47,6 +47,11 @@ Run a threshold sweep.
 uv run scripts/thresholds.py "Some description of the run"
 ```
 
+## Run the tests
+```sh
+uv run pytest
+```
+
 
 
 ## Milestone 2 Baseline

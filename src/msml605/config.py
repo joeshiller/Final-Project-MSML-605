@@ -37,7 +37,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 #     "test": {"num_pos": 200, "num_neg": 200},
 # }
 
-config_path = PROJECT_ROOT / "configs" / "data-improve.json" #new config with data improvement
+config_path = PROJECT_ROOT / "configs" / "config.json" #new config with data improvement
 
 
 def load_config(path) -> Config:
