@@ -4,7 +4,7 @@ from pathlib import Path
 import numpy as np
 from loguru import logger
 from PIL import Image
-
+from similarity import euclidean_distance_batch
 
 def load_pairs_csv(path):
     rows = []
