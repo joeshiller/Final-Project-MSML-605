@@ -2,9 +2,22 @@
 This report presents the Milestone 2 evaluation of our face verification pipeline on the LFW dataset. From milestone 1, we built deterministic ingestion, split, and a pair-generation pipeline. In milestone 2, we evaluated a distance-based verifier that scores image pairs and predicts same-person versus different-person labels using a threshold selected on the validation split. We focused on reproducible evaluation, tracked runs, threshold selection, a data-centric improvement to pair generation, and error analysis. 
 
 ### Baseline setup and the tracked-run process
+Our baseline data starts with reusing the deterministic Milestone 1 split and pair-generation policy and a seed of `123`, which was:
+```json
+    "pair_policy": {
+      "train": { "num_pos": 1000, "num_neg": 1000 },
+      "val": { "num_pos": 200, "num_neg": 200 },
+      "test": { "num_pos": 200, "num_neg": 200 }
+    }
+```
+For tracking runs, we generate JSON files in the `fixed-runs` directory, one for each run. The JSON file contains timestamps, parameters, and hashes of files and systems. This way we can pinpoint if a data file has changed, or if a parameter has changed between runs.
+
 
 ### ROC plot
-
+Baseline ROC curve:
+![Baseline ROC](baseline.png)
+After data-centric change:
+![Improved data](improved.png)
 ### Threshold Selection
 We selected the operating threshold on the validation split by maximizing balanced accuracy. Since our system uses Euclidean distance, smaller scores indicate that two images are more likely to belong to the same person. For each candidate threshold, we predicted “same person” when the score was less than or equal to the threshold and “different people” otherwise, then chose the threshold that gave the highest balanced accuracy. After selecting this threshold on validation, we kept it fixed. 
 
@@ -17,3 +30,5 @@ One important error slice was **false positives near the decision boundary**. In
 Another important kind of error was **false negatives near the decision boundary**. In this slice, the model predicted that two images of the same person belonged to different people because their scores fell just above the selected threshold. In the baseline run, this slice contained **96 examples**, including **Ralph Klein** (`score = 20.7700`) and **Richard Krajicek**. In the improved run, this slice increased to **120 examples**, with examples such as **Rick Perry** (`score = 18.8935`) and **Queen Latifah**. These errors show that raw pixel distance can push images of the same exact person apart when pose or lighting changes across photos. Overall, the improved threshold reduced false positives but increased false negatives, which shows a tradeoff between rejecting wrong matches and missing true matches.
 
 ### Conclusion
+In short, we've collected, organized, and analyzed our dataset and found made a small but analytically driven improvement to our analysis.
+It is important that these improvements are measurable and isolated to distinguish what changes are meaningful.
