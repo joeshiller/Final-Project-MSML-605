@@ -66,7 +66,7 @@ def main():
     # graph!
     import sklearn.metrics
 
-    fpr, tpr, sk_threshold = sklearn.metrics.roc_curve(labels, scores)
+    fpr, tpr, sk_threshold = sklearn.metrics.roc_curve(labels, -scores)
     roc_auc = sklearn.metrics.auc(fpr, tpr)
     import matplotlib.pyplot as plt
 

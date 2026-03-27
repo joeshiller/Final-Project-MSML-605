@@ -3,6 +3,7 @@
 This repository ingests and processes the LFW dataset.
 
 ## Project Structure
+- `reports/` - Where reports are.
 - `src/` - Where the main logic lives.
 - `scripts` - Where higher-level scripts that call into `src/` go.
 - `input-data/` - Where downloaded data is stored.
