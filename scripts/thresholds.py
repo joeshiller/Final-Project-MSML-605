@@ -2,7 +2,7 @@ import argparse
 import csv
 from datetime import datetime
 from pathlib import Path
-from turtle import begin_fill, done
+
 
 import numpy as np
 from loguru import logger
@@ -66,7 +66,7 @@ def main():
     # graph!
     import sklearn.metrics
 
-    fpr, tpr, sk_threshold = sklearn.metrics.roc_curve(labels, scores)
+    fpr, tpr, sk_threshold = sklearn.metrics.roc_curve(labels, -scores)
     roc_auc = sklearn.metrics.auc(fpr, tpr)
     import matplotlib.pyplot as plt
 
