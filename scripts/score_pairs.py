@@ -1,5 +1,6 @@
 import csv
 from pathlib import Path
+import argparse
 
 import numpy as np
 from loguru import logger
@@ -10,13 +11,17 @@ from msml605 import config, scoring
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--split", required=True, choices=["train", "val", "test"])
+    args = parser.parse_args()
+
     logger.info("Starting pair scoring")
 
     cfg = config.load_config(config.config_path)
     output_dir = Path(cfg.output_dir)
     image_root = Path(cfg.input_dir) / "lfw-deepfunneled" / "lfw-deepfunneled"
 
-    split = "val"
+    split = args.split
     pairs_path = output_dir / f"pairs_{split}.csv"
     scores_path = output_dir / f"{split}_scores.csv"
 
@@ -25,6 +30,7 @@ def main():
     scoring.write_scores_csv(scores_path, rows, scores)
 
     logger.info(f"Saved scored pairs to {scores_path}")
+
 
 
 if __name__ == "__main__":
