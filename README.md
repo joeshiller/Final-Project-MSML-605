@@ -75,3 +75,10 @@ Baseline configuration:
 - If the score is less than or equal to the threshold, we predict same person. Otherwise, we predict different people.
 - After choosing the threshold on validation, we keep it fixed and use it on the test set.
 - The best validation threshold for the baseline system was 20.56.
+
+The selected baseline is `20.5641134801839`. The run is located in `fixed-runs/` in with an id of `df035d4b-5818-4579-9bce-15cb879de875`.
+Here's the confusion matrix for this run:
+|    | Actually Positive | Actually Negative |
+|---|---|---|
+|Predicted Positive|98|68|
+|Predicted Negative|102|132|
