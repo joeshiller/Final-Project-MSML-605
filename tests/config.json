@@ -1,0 +1,11 @@
+{
+  "seed": 123,
+  "input_dir": "tests/test_data",
+  "output_dir": "output-data",
+  "run_dir": "runs",
+  "pair_policy": {
+    "train": { "num_pos": 1, "num_neg": 1 },
+    "val": { "num_pos": 1, "num_neg": 1 },
+    "test": { "num_pos": 1, "num_neg": 1 }
+  }
+}
