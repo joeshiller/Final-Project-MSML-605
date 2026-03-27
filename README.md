@@ -75,3 +75,6 @@ Baseline configuration:
 - If the score is less than or equal to the threshold, we predict same person. Otherwise, we predict different people.
 - After choosing the threshold on validation, we keep it fixed and use it on the test set.
 - The best validation threshold for the baseline system was 20.56.
+- After the data-centric improvement, the best validation threshold was `18.88`.
+- We changed pair generation by adding a deterministic cap on positive candidate pairs per identity.
+

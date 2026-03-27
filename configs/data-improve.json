@@ -1,0 +1,11 @@
+{
+  "seed": 123,
+  "input_dir": "input-data",
+  "output_dir": "output-data",
+  "run_dir": "improved",
+  "pair_policy": {
+    "train": { "num_pos": 1000, "num_neg": 1000, "max_pos_pairs_per_identity": 20 },
+    "val": { "num_pos": 200, "num_neg": 200, "max_pos_pairs_per_identity": 5 },
+    "test": { "num_pos": 200, "num_neg": 200, "max_pos_pairs_per_identity": 5 }
+  }
+}
