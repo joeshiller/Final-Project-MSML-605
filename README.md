@@ -75,6 +75,9 @@ Baseline configuration:
 - If the score is less than or equal to the threshold, we predict same person. Otherwise, we predict different people.
 - After choosing the threshold on validation, we keep it fixed and use it on the test set.
 - The best validation threshold for the baseline system was 20.56.
+- After the data-centric improvement, the best validation threshold was `18.88`.
+- We changed pair generation by adding a deterministic cap on positive candidate pairs per identity.
+
 
 The selected baseline is `20.5641134801839`. The run is located in `fixed-runs/` in with an id of `df035d4b-5818-4579-9bce-15cb879de875`.
 Here's the confusion matrix for this run:
@@ -82,3 +85,12 @@ Here's the confusion matrix for this run:
 |---|---|---|
 |Predicted Positive|98|68|
 |Predicted Negative|102|132|
+
+
+The selected post-change validation threshold is `18.87954639433729`. The run is located in `fixed-runs/` with an id of `f565dfef-4b9a-49ea-b2e9-b3932affb7e7`.
+
+Here’s the confusion matrix for this run:
+|    | Actually Positive | Actually Negative |
+|---|---|---|
+|Predicted Positive|80|43|
+|Predicted Negative|120|157|

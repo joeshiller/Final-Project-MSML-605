@@ -50,7 +50,7 @@ def group_by_identity(rows):
     return identity_to_images
 
 
-def build_positive_candidates(identity_to_images):
+def build_positive_candidates(identity_to_images, max_pairs_per_identity=None):
     candidates = []
 
     for identity in sorted(identity_to_images.keys()):
@@ -58,8 +58,14 @@ def build_positive_candidates(identity_to_images):
         if len(images) < 2:
             continue
 
+        identity_pairs = []
         for left_path, right_path in combinations(images, 2):
-            candidates.append((left_path, right_path, 1))
+            identity_pairs.append((left_path, right_path, 1))
+
+        if max_pairs_per_identity is not None:
+            identity_pairs = identity_pairs[:max_pairs_per_identity]
+
+        candidates.extend(identity_pairs)
 
     return candidates
 
@@ -111,7 +117,12 @@ def generate_pairs_for_split(pair_policy, output_dir, seed, split):
     expanded_rows = expand_count_rows_to_paths(raw_rows)
     identity_to_images = group_by_identity(expanded_rows)
 
-    pos_candidates = build_positive_candidates(identity_to_images)
+    max_pairs_per_identity = pair_policy[split].get("max_pos_pairs_per_identity")
+
+    pos_candidates = build_positive_candidates(
+        identity_to_images,
+        max_pairs_per_identity=max_pairs_per_identity,
+    )
     neg_candidates = build_negative_candidates(identity_to_images)
 
     rng = random.Random(seed)
@@ -154,6 +165,7 @@ def generate_pairs_for_split(pair_policy, output_dir, seed, split):
         "num_pairs": len(all_rows),
         "num_pos": pair_policy[split]["num_pos"],
         "num_neg": pair_policy[split]["num_neg"],
+        "max_pos_pairs_per_identity": max_pairs_per_identity,
     }
 
 
