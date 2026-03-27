@@ -85,3 +85,12 @@ Here's the confusion matrix for this run:
 |---|---|---|
 |Predicted Positive|98|68|
 |Predicted Negative|102|132|
+
+
+The selected post-change validation threshold is `18.87954639433729`. The run is located in `fixed-runs/` with an id of `f565dfef-4b9a-49ea-b2e9-b3932affb7e7`.
+
+Here’s the confusion matrix for this run:
+|    | Actually Positive | Actually Negative |
+|---|---|---|
+|Predicted Positive|80|43|
+|Predicted Negative|120|157|
