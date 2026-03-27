@@ -42,8 +42,9 @@ uv run scripts/score_pairs.py
 ```
 
 ## Run `thresholds`
+Run a threshold sweep.
 ```sh
-uv run scripts/thresholds.py
+uv run scripts/thresholds.py "Some description of the run"
 ```
 
 
@@ -74,4 +75,3 @@ Baseline configuration:
 - If the score is less than or equal to the threshold, we predict same person. Otherwise, we predict different people.
 - After choosing the threshold on validation, we keep it fixed and use it on the test set.
 - The best validation threshold for the baseline system was 20.56.
-

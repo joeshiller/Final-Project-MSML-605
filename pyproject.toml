@@ -7,9 +7,11 @@ requires-python = ">=3.11"
 dependencies = [
     "kagglehub[pandas-datasets]>=1.0.0",
     "loguru>=0.7.3",
+    "matplotlib>=3.10.8",
     "pandas>=2.3.3",
     "pillow>=12.1.1",
     "pydantic>=2.12.5",
+    "scikit-learn>=1.8.0",
 ]
 
 [build-system]

@@ -1,12 +1,15 @@
+import argparse
 import csv
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
+from turtle import begin_fill, done
 
 import numpy as np
 from loguru import logger
 
+import msml605
+from msml605 import config, run
 from msml605.metrics import apply_threshold, evaluate_predictions
-from msml605.tracking import log_run, get_git_commit_hash
 
 
 def load_scores_csv(path):
@@ -43,6 +46,16 @@ def write_sweep_csv(path, rows):
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        prog="Threshold Sweep",
+        description="yuh",
+    )
+    parser.add_argument("description")
+    args = parser.parse_args()
+    description = args.description
+
+    cfg = config.load_config(config.config_path)
+
     logger.info("Starting threshold sweep")
 
     input_path = Path("output-data/val_scores.csv")
@@ -71,6 +84,7 @@ def main():
             "fn": metrics["fn"],
         }
         sweep_rows.append(row)
+        logger.info(f"new row: {row}")
 
         if metrics["balanced_accuracy"] > best_balanced_accuracy:
             best_balanced_accuracy = metrics["balanced_accuracy"]
@@ -79,25 +93,25 @@ def main():
 
     write_sweep_csv(output_path, sweep_rows)
 
-    log_run(
-        {
-            "run_id": "run_001",
-            "timestamp": datetime.utcnow().isoformat(),
-            "commit_hash": get_git_commit_hash(),
-            "config_name": "baseline",
-            "data_version": "milestone1_pairs",
-            "split": "val",
-            "threshold_rule": "max_balanced_accuracy",
-            "threshold_value": best_threshold,
-            "accuracy": best_metrics["accuracy"],
-            "balanced_accuracy": best_metrics["balanced_accuracy"],
-            "tp": best_metrics["tp"],
-            "tn": best_metrics["tn"],
-            "fp": best_metrics["fp"],
-            "fn": best_metrics["fn"],
-            "note": "baseline validation threshold sweep",
-        }
+    this_run = run.create_run(
+        cfg,
+        run.RunConfig(
+            split="val",
+            threshold_rule="max_balanced_accuracy",
+            threshold_value=best_threshold,
+        ),
+        run.RunMetrics(
+            accuracy=best_metrics["accuracy"],
+            balanced_accuracy=best_metrics["balanced_accuracy"],
+            true_positive=best_metrics["tp"],
+            true_negative=best_metrics["tn"],
+            false_positive=best_metrics["fp"],
+            false_negative=best_metrics["fn"],
+        ),
+        description,
     )
+    run_path = run.write_run(this_run, cfg.get_run_dir())
+    logger.info(f"Wrote run to {run_path}")
 
     logger.info(f"Saved sweep results to {output_path}")
     logger.info(f"Best threshold: {best_threshold}")
