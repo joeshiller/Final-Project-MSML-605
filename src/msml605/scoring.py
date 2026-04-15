@@ -2,9 +2,16 @@ import csv
 from pathlib import Path
 
 import numpy as np
+import torch
+from facenet_pytorch import InceptionResnetV1
+
 from loguru import logger
 from PIL import Image
-from similarity import euclidean_distance_batch
+import gc
+
+from msml605.similarity import euclidean_distance_batch
+
+resnet = InceptionResnetV1(pretrained="vggface2").eval()
 
 def load_pairs_csv(path):
     rows = []
@@ -15,28 +22,37 @@ def load_pairs_csv(path):
     return rows
 
 
-def load_image_vector(image_path, image_root, image_size):
+def load_image_vector(image_path, image_root):
     full_path = Path(image_root) / image_path
-    image = Image.open(full_path).convert("L")
-    image = image.resize((image_size, image_size))
+    image = Image.open(full_path)
     array = np.asarray(image, dtype=np.float32) / 255.0
-    return array.reshape(-1)
+    img_tensor = torch.tensor(array)
+
+    # This is a [255,255,3] tensor. we need a [3,255,255] tensor.
+    img_tensor = torch.movedim(img_tensor,-1,0)
+    embedding = resnet(img_tensor.unsqueeze(0))
+   # Returns a 512-d array.
+    return embedding.squeeze().detach().numpy()
 
 
-def score_pairs(rows, image_root, image_size):
+def score_pairs(rows, image_root):
     left_vectors = []
     right_vectors = []
+    logger.debug("Okay, about to start loading the embeddings.")
 
     for row in rows:
-        left_vectors.append(load_image_vector(row["left_path"], image_root, image_size))
+        left_vectors.append(load_image_vector(row["left_path"], image_root))
         right_vectors.append(
-            load_image_vector(row["right_path"], image_root, image_size)
+            load_image_vector(row["right_path"], image_root)
         )
+    logger.debug("Finished loading up the embeddings")
 
     left_vectors = np.stack(left_vectors, axis=0)
     right_vectors = np.stack(right_vectors, axis=0)
 
+    logger.debug("About to start calcing differences")
     scores = euclidean_distance_batch(left_vectors, right_vectors)
+    logger.debug("Done calcing differences")
     return scores
 
 

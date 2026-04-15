@@ -39,7 +39,7 @@ uv run scripts/benchmark.py
 ## Run `score_pairs`
 Compute Euclidean-distance scores for each validation pair.
 ```sh
-uv run scripts/score_pairs.py
+uv run scripts/score_pairs.py --split=[train | val | test]
 ```
 
 ## Run `thresholds`

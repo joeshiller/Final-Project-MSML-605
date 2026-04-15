@@ -1,6 +1,5 @@
-import csv
-from pathlib import Path
 import argparse
+from pathlib import Path
 
 import numpy as np
 from loguru import logger
@@ -26,11 +25,10 @@ def main():
     scores_path = output_dir / f"{split}_scores.csv"
 
     rows = scoring.load_pairs_csv(pairs_path)
-    scores = scoring.score_pairs(rows, image_root, image_size=64)
+    scores = scoring.score_pairs(rows, image_root)
     scoring.write_scores_csv(scores_path, rows, scores)
 
     logger.info(f"Saved scored pairs to {scores_path}")
-
 
 
 if __name__ == "__main__":

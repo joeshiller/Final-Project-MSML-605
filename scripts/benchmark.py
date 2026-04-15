@@ -1,11 +1,12 @@
+import json
 import time
 from math import sqrt
-import json
 from pathlib import Path
 
 import numpy as np
 from loguru import logger
-from similarity import cosine_similarity_batch, euclidean_distance_batch
+
+from msml605.similarity import cosine_similarity_batch, euclidean_distance_batch
 
 # def mag(a) -> float:
 # return sqrt(sum(x**2 for x in a))
@@ -22,7 +23,7 @@ def cosine_sim(a, b):
             dot += a[x, y] * b[x, y]
             a_sq += a[x, y] * a[x, y]
             b_sq += b[x, y] * b[x, y]
-        denom = max((sqrt(a_sq)) * (sqrt(b_sq)),1e-12 )
+        denom = max((sqrt(a_sq)) * (sqrt(b_sq)), 1e-12)
         res.append(dot / denom)
 
     return np.array(res)
@@ -38,9 +39,7 @@ def euclidean_sim(a, b):
         res.append(sqrt(total))
 
     return np.array(res)
-   
-            
-        
+
 
 def main():
     logger.info("Hello from benchmark.py")
