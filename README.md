@@ -100,3 +100,10 @@ Here’s the confusion matrix for this run:
 |---|---|---|
 |Predicted Positive|80|43|
 |Predicted Negative|120|157|
+
+
+# Milestone 3 Baseline
+- reusing the deterministic Milestone 2 improved split and pair-generation policy from `data-improve.json` with seed `123`
+- Validation split is used for threshold selection
+- Test split is used for final reporting
+- We keep this evaluation logic fixed in Milestone 3, but reselect the threshold after switching to embeddings
