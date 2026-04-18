@@ -19,6 +19,8 @@ This repository ingests and processes the LFW dataset.
       - `{test, train, val}_identities.csv`
       - `{test, train, val}_scores.csv`
 - `configs/` - Where configuration files go.
+  - `config.json` - The config the next run will copy.
+  - `environment.json` - Configurations for where data is located in the project. Not copied.
 - `tests/` - Where unit and integration tests go.
 
 ## Prerequisites

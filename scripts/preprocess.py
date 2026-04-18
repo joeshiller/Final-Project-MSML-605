@@ -3,12 +3,18 @@ from pathlib import Path
 
 from loguru import logger
 
-from msml605 import config, load_data, manifest
+from msml605 import config, load_data, manifest, run
 
 
 def main():
     logger.info("Starting Data Preprocessing")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--run", required=True)
+    args = parser.parse_args()
+
     cfg = config.load_config(config.config_path)
+
+    run_model = run.get_run(cfg, args.run)
 
     seed = cfg.seed
     man = manifest.DataManifest(

@@ -38,7 +38,7 @@ class Run(BaseModel):
     "The time the run was started, in the timezone UTC."
 
     commit_hash: str
-    config: msml605.config.Config
+    # config: msml605.config.Config
 
     # data_version: str
     # "SHA256 hash of all input configurations."  # TODO: do this!
@@ -52,7 +52,7 @@ class Run(BaseModel):
 
 
 def create_run(
-    config: msml605.config.Config,
+    # config: msml605.config.Config,
     # threshold_info: RunConfig,
     # metrics: RunMetrics,
     change_description: str,
@@ -61,12 +61,24 @@ def create_run(
         id=uuid.uuid4(),
         timestamp=datetime.datetime.now(datetime.timezone.utc),
         commit_hash=get_git_commit_hash(),  # TODO: check if there are any staged changes.
-        config=config,
+        # config=config,
         # data_version=get_fingerprint_of_data(config),
         # threshold_info=threshold_info,
         # metrics=metrics,
         change_description=change_description,
     )
+
+
+def get_run(config: msml605.config.Config, run_id: str) -> Run:
+    run_dir = config.run_dir / f"run_{run_id}"
+
+    if os.path.exists(run_dir) == False:
+        raise Exception(f"Run of ID '{run_id}' does not exist.")
+
+    run_file_path = run_dir / f"run_{run_id}.json"
+    with open(run_file_path, "r") as file:
+        content = file.read()
+        return Run.model_validate_json(content)
 
 
 def get_git_commit_hash() -> str:
