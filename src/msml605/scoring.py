@@ -35,7 +35,7 @@ def load_image_vector(image_path, image_root):
     return embedding.squeeze().detach().numpy()
 
 
-def score_pairs(rows, image_root):
+def generate_embeddings(rows, image_root):
     left_vectors = []
     right_vectors = []
     logger.debug("Okay, about to start loading the embeddings.")
@@ -47,6 +47,10 @@ def score_pairs(rows, image_root):
 
     left_vectors = np.stack(left_vectors, axis=0)
     right_vectors = np.stack(right_vectors, axis=0)
+    return left_vectors, right_vectors
+
+
+def score_pairs(left_vectors, right_vectors):
 
     logger.debug("About to start calcing differences")
     scores = euclidean_distance_batch(left_vectors, right_vectors)
@@ -71,5 +75,34 @@ def write_scores_csv(path, rows, scores):
                     "label": row["label"],
                     "split": row["split"],
                     "score": float(score),
+                }
+            )
+
+
+def write_embeddings_csv(path, rows, embeddings):
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(path, "w", newline="") as f:
+        writer = csv.DictWriter(
+            f,
+            fieldnames=[
+                "left_path",
+                "right_path",
+                "label",
+                "split",
+                "left_embed",
+                "right_embed",
+            ],
+        )
+        writer.writeheader()
+        for row, (left_embed, right_embed) in zip(rows, embeddings):
+            writer.writerow(
+                {
+                    "left_path": row["left_path"],
+                    "right_path": row["right_path"],
+                    "label": row["label"],
+                    "split": row["split"],
+                    "left_embed": float(left_embed),
+                    "right_embed": float(right_embed),
                 }
             )

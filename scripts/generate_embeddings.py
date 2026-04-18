@@ -30,13 +30,13 @@ def main():
 
     split = args.split
     pairs_path = run_dir / f"pairs_{split}.csv"
-    scores_path = run_dir / f"{split}_scores.csv"
+    embeddings_path = run_dir / f"{split}_embeddings.csv"
 
     rows = scoring.load_pairs_csv(pairs_path)
-    scores = scoring.score_pairs(rows, image_root)
-    scoring.write_scores_csv(scores_path, rows, scores)
+    embeddings = scoring.generate_embeddings(rows, image_root)
+    scoring.write_embeddings_csv(embeddings_path, rows, embeddings)
 
-    logger.info(f"Saved scored pairs to {scores_path}")
+    logger.info(f"Saved embeddings to {embeddings_path}")
 
 
 if __name__ == "__main__":
