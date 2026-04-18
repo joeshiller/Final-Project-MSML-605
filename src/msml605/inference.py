@@ -4,7 +4,7 @@ from pathlib import Path
 import numpy as np
 
 from msml605.metrics import apply_threshold
-from msml605.scoring import load_image_vector
+from msml605.scoring import load_image_embedding
 from msml605.similarity import euclidean_distance_batch
 from msml605.confidence import compute_confidence
 
@@ -18,8 +18,8 @@ def verify_pair(
 ):
     start = time.perf_counter()
 
-    left_vector = load_image_vector(image_a_path, image_root)
-    right_vector = load_image_vector(image_b_path, image_root)
+    left_vector = load_image_embedding(image_a_path, image_root)
+    right_vector = load_image_embedding(image_b_path, image_root)
 
     left_vectors = np.expand_dims(left_vector, axis=0)
     right_vectors = np.expand_dims(right_vector, axis=0)
