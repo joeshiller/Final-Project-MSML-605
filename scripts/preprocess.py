@@ -4,7 +4,7 @@ from pathlib import Path
 
 from loguru import logger
 
-from msml605 import config, load_data, manifest, run
+from msml605 import config, load_data, manifest, pairs, run
 
 
 def main():
@@ -20,11 +20,23 @@ def main():
     cfg = run_model.load_config(env_cfg)
     run_dir = run_model.get_path(env_cfg)
 
+    logger.info("Splitting data into datasets")
     raw = load_data.load_dataset(env_cfg.input_dir)
     train, val, test = load_data.split_dataset(raw, run_dir)
 
+    logger.info("Starting deterministic pair generation")
+    summaries = []
+    for split in ["train", "val", "test"]:
+        summaries.append(
+            pairs.generate_pairs_for_split(cfg.pair_policy, run_dir, cfg.seed, split)
+        )
+
+    for summary in summaries:
+        logger.info(summary)
+
     hugging_face_handle = "jessicali9530/lfw-dataset"
 
+    logger.info("Writing the Data Manifest")
     seed = cfg.seed
     man = manifest.DataManifest(
         id=uuid.uuid4(),

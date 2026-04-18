@@ -37,22 +37,30 @@ uv run scripts/ingest_lfw.py
 ```
 
 ## Create Run
+```sh
+uv run scripts/create_run.py "some description"
+```
+which will output the run ID.
 
 
 ## Run Preprocess
 Split the dataset.
 ```sh
-uv run scripts/make_pairs.py
+uv run scripts/preprocess.py --run <run id>
 ```
 
 ## Generate Embeddings
+```sh
+uv run scripts/generate_embeddings.py --run <run id>
+```
 
 
 ## Run `score_pairs`
 Compute Euclidean-distance scores for each validation pair.
 ```sh
-uv run scripts/score_pairs.py --split=[train | val | test]
+uv run scripts/score_pairs.py --split=[train | val | test] --run <run id>
 ```
+
 ## Run `thresholds`
 Run a threshold sweep.
 ```sh
