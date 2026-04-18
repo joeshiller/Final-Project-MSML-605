@@ -17,43 +17,45 @@ This repository ingests and processes the LFW dataset.
 
 # Commands
 
+## Build the Docker Image
+```sh
+scripts/build-image.sh
+```
 
 ## Run `ingest_lfw`
 Download and ingest the LFW dataset.
 ```sh
-uv run scripts/ingest_lfw.py
+scripts/run-container.sh uv run scripts/ingest_lfw.py
 ```
 
 ## Run `make_pairs`
 Split the dataset.
 ```sh
-uv run scripts/make_pairs.py
+scripts/run-container.sh uv run scripts/make_pairs.py
 ```
 
 ## Run `benchmark`
 Show that Numpy is faster than Python.
 ```sh
-uv run scripts/benchmark.py
+scripts/run-container.sh uv run scripts/benchmark.py
 ```
 
 ## Run `score_pairs`
 Compute Euclidean-distance scores for each validation pair.
 ```sh
-uv run scripts/score_pairs.py --split=[train | val | test]
+scripts/run-container.sh uv run scripts/score_pairs.py --split=[train | val | test]
 ```
 
 ## Run `thresholds`
 Run a threshold sweep.
 ```sh
-uv run scripts/thresholds.py "Some description of the run"
+scripts/run-container.sh uv run scripts/thresholds.py "Some description of the run"
 ```
 
 ## Run the tests
 ```sh
-uv run pytest
+scripts/run-container.sh uv run pytest
 ```
-
-
 
 ## Milestone 2 Baseline
 - reusing the deterministic Milestone 1 split and pair-generation policy with seed `123`
@@ -101,12 +103,10 @@ Here’s the confusion matrix for this run:
 |Predicted Positive|80|43|
 |Predicted Negative|120|157|
 
-
+  
 # Milestone 3 Baseline
-- reusing the deterministic Milestone 2 improved split and pair-generation policy from `data-improve.json` with seed `123`
-- Validation split is used for threshold selection
-- Test split is used for final reporting
-- We keep this evaluation logic fixed in Milestone 3, but reselect the threshold after switching to embeddings
+Using the same settings as Milestone 2, the threshold sweep yields a baseline threshold of `0.9512748293069379`. The run is located in `fixed-run/` with an id
+of `1f69fdcd-dc01-4ef6-b504-4d17bafc91c0`.
 
 ## CLI Inference
 
@@ -114,4 +114,4 @@ Here’s the confusion matrix for this run:
 uv run python scripts/verify_pair.py \
   --image-a George_W_Bush/George_W_Bush_0001.jpg \
   --image-b George_W_Bush/George_W_Bush_0002.jpg \
-  --threshold x.xx
+  --threshold x.xx ```
