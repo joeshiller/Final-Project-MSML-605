@@ -110,8 +110,16 @@ of `1f69fdcd-dc01-4ef6-b504-4d17bafc91c0`.
 
 ## CLI Inference
 
-```bash
 uv run python scripts/verify_pair.py \
   --image-a George_W_Bush/George_W_Bush_0001.jpg \
   --image-b George_W_Bush/George_W_Bush_0002.jpg \
-  --threshold x.xx ```
+  --threshold x.xx 
+
+
+## Confidence
+- confidence = normalized(|score - threshold|)
+- predictions farther from the decision boundary get higher confidence
+- predictions closer to the threshold get lower confidence
+
+
+
