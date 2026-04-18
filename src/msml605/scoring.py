@@ -1,17 +1,17 @@
 import csv
+import gc
 from pathlib import Path
 
 import numpy as np
 import torch
 from facenet_pytorch import InceptionResnetV1
-
 from loguru import logger
 from PIL import Image
-import gc
 
 from msml605.similarity import euclidean_distance_batch
 
 resnet = InceptionResnetV1(pretrained="vggface2").eval()
+
 
 def load_pairs_csv(path):
     rows = []
@@ -29,9 +29,9 @@ def load_image_vector(image_path, image_root):
     img_tensor = torch.tensor(array)
 
     # This is a [255,255,3] tensor. we need a [3,255,255] tensor.
-    img_tensor = torch.movedim(img_tensor,-1,0)
+    img_tensor = torch.movedim(img_tensor, -1, 0)
     embedding = resnet(img_tensor.unsqueeze(0))
-   # Returns a 512-d array.
+    # Returns a 512-d array.
     return embedding.squeeze().detach().numpy()
 
 
@@ -42,9 +42,7 @@ def score_pairs(rows, image_root):
 
     for row in rows:
         left_vectors.append(load_image_vector(row["left_path"], image_root))
-        right_vectors.append(
-            load_image_vector(row["right_path"], image_root)
-        )
+        right_vectors.append(load_image_vector(row["right_path"], image_root))
     logger.debug("Finished loading up the embeddings")
 
     left_vectors = np.stack(left_vectors, axis=0)
