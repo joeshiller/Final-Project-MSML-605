@@ -103,6 +103,15 @@ Here’s the confusion matrix for this run:
 |Predicted Positive|80|43|
 |Predicted Negative|120|157|
 
+  
 # Milestone 3 Baseline
 Using the same settings as Milestone 2, the threshold sweep yields a baseline threshold of `0.9512748293069379`. The run is located in `fixed-run/` with an id
 of `1f69fdcd-dc01-4ef6-b504-4d17bafc91c0`.
+
+## CLI Inference
+
+```bash
+uv run python scripts/verify_pair.py \
+  --image-a George_W_Bush/George_W_Bush_0001.jpg \
+  --image-b George_W_Bush/George_W_Bush_0002.jpg \
+  --threshold x.xx ```
