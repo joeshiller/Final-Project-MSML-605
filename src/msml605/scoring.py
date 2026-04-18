@@ -7,7 +7,6 @@ from facenet_pytorch import InceptionResnetV1
 
 from loguru import logger
 from PIL import Image
-import gc
 
 from msml605.similarity import euclidean_distance_batch
 
@@ -22,17 +21,28 @@ def load_pairs_csv(path):
     return rows
 
 
-def load_image_vector(image_path, image_root):
+
+def load_image(image_path, image_root):
     full_path = Path(image_root) / image_path
-    image = Image.open(full_path)
+    return Image.open(full_path)
+
+
+def preprocess_image(image):
     array = np.asarray(image, dtype=np.float32) / 255.0
     img_tensor = torch.tensor(array)
+    img_tensor = torch.movedim(img_tensor, -1, 0)
+    return img_tensor
 
-    # This is a [255,255,3] tensor. we need a [3,255,255] tensor.
-    img_tensor = torch.movedim(img_tensor,-1,0)
+
+def generate_embedding(img_tensor):
     embedding = resnet(img_tensor.unsqueeze(0))
-   # Returns a 512-d array.
     return embedding.squeeze().detach().numpy()
+
+
+def load_image_embedding(image_path, image_root):
+    image = load_image(image_path, image_root)
+    img_tensor = preprocess_image(image)
+    return generate_embedding(img_tensor)
 
 
 def score_pairs(rows, image_root):
@@ -41,10 +51,8 @@ def score_pairs(rows, image_root):
     logger.debug("Okay, about to start loading the embeddings.")
 
     for row in rows:
-        left_vectors.append(load_image_vector(row["left_path"], image_root))
-        right_vectors.append(
-            load_image_vector(row["right_path"], image_root)
-        )
+        left_vectors.append(load_image_embedding(row["left_path"], image_root))
+        right_vectors.append(load_image_embedding(row["right_path"], image_root))
     logger.debug("Finished loading up the embeddings")
 
     left_vectors = np.stack(left_vectors, axis=0)
