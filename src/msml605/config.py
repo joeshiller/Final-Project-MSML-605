@@ -2,7 +2,7 @@ from pathlib import Path
 
 from pydantic import BaseModel
 
-from msml605.run import Run
+# from msml605.run import Run
 
 # class PairPolicyEntry(BaseModel):
 #     num_pos: int
@@ -38,13 +38,6 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 config_path = PROJECT_ROOT / "configs" / "config.json"
 environment_config_path = PROJECT_ROOT / "configs" / "environment.json"
-
-
-def load_config(env: EnvironmentConfig, run: Run) -> Config:
-    cfg_path = env.run_dir / f"run_{run.id}" / "config.json"
-    with open(cfg_path, "r") as file:
-        content = file.read()
-        return Config.model_validate_json(content)
 
 
 def load_environment_config(path) -> EnvironmentConfig:

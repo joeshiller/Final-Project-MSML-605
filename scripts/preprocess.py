@@ -1,3 +1,4 @@
+import argparse
 import uuid
 from pathlib import Path
 
@@ -12,9 +13,17 @@ def main():
     parser.add_argument("--run", required=True)
     args = parser.parse_args()
 
-    cfg = config.load_config(config.config_path)
+    # Either take the users config or the default path.
+    env_cfg = config.load_environment_config(config.environment_config_path)
+    run_model = run.get_run(env_cfg, args.run)
 
-    run_model = run.get_run(cfg, args.run)
+    cfg = run_model.load_config(env_cfg)
+    run_dir = run_model.get_path(env_cfg)
+
+    raw = load_data.load_dataset(env_cfg.input_dir)
+    train, val, test = load_data.split_dataset(raw, run_dir)
+
+    hugging_face_handle = "jessicali9530/lfw-dataset"
 
     seed = cfg.seed
     man = manifest.DataManifest(
@@ -35,12 +44,15 @@ def main():
                 sum(test["images"]),
             ],
         ],
-        data_source=data_source,
+        # TODO: this should be in ingest_lfw
+        data_source=manifest.DataSource(
+            url=hugging_face_handle, version="kagglehub", cache_dir=env_cfg.input_dir
+        ),
     )
 
     logger.debug(man)
 
-    manifest.write_manifest(man, f"{cfg.output_dir}/manifest.json")
+    manifest.write_manifest(man, run_dir / "manifest.json")
 
 
 if __name__ == "__main__":

@@ -8,17 +8,14 @@ from msml605 import config, load_data, manifest
 
 def main():
     logger.info("Starting LFW ingestion")
+    env_cfg = config.load_environment_config(config.environment_config_path)
     hugging_face_handle = "jessicali9530/lfw-dataset"
-    cfg = config.load_config(config.config_path)
 
-    load_data.download_dataset(hugging_face_handle, cfg.input_dir)
-    raw = load_data.load_dataset(cfg.input_dir)
+    load_data.download_dataset(hugging_face_handle, env_cfg.input_dir)
     # train, val, test = load_data.split_dataset(raw, cfg.output_dir)
-    data_source = manifest.DataSource(
-        url=hugging_face_handle, version="kagglehub", cache_dir=cfg.input_dir
-    )
 
-    logger.debug(data_source)
+    # logger.debug(data_source)
+
     # TODO(David): store data source in output-data/data-source.json
 
     # seed = cfg.seed

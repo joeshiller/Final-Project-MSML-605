@@ -9,7 +9,7 @@ from pathlib import Path
 from loguru import logger
 from pydantic import BaseModel
 
-import msml605.config
+from msml605.config import Config, EnvironmentConfig
 
 
 class RunConfig(BaseModel):
@@ -50,6 +50,16 @@ class Run(BaseModel):
     change_description: str
     "What changed?"
 
+    def get_path(self, env: EnvironmentConfig) -> Path:
+        run_dir = Path(env.output_dir) / Path(env.run_dir) / f"run_{self.id}"
+        return run_dir
+
+    def load_config(self, env: EnvironmentConfig) -> Config:
+        cfg_path = self.get_path(env) / "config.json"
+        with open(cfg_path, "r") as file:
+            content = file.read()
+            return Config.model_validate_json(content)
+
 
 def create_run(
     # config: msml605.config.Config,
@@ -69,13 +79,14 @@ def create_run(
     )
 
 
-def get_run(config: msml605.config.Config, run_id: str) -> Run:
-    run_dir = config.run_dir / f"run_{run_id}"
+def get_run(config: EnvironmentConfig, run_id: str) -> Run:
+    run_dir = f"{config.output_dir}/{config.run_dir}/run_{run_id}"
+    logger.debug(f"trying {run_dir}")
 
     if os.path.exists(run_dir) == False:
         raise Exception(f"Run of ID '{run_id}' does not exist.")
 
-    run_file_path = run_dir / f"run_{run_id}.json"
+    run_file_path = Path(run_dir) / f"run_{run_id}.json"
     with open(run_file_path, "r") as file:
         content = file.read()
         return Run.model_validate_json(content)
@@ -96,7 +107,7 @@ def get_fingerprint_of_file(file: Path, hash) -> None:
             hash.update(data)
 
 
-def get_fingerprint_of_data(config: msml605.config.Config) -> str:
+def get_fingerprint_of_data(config: Config) -> str:
     out_dir = config.output_dir
     csvs = glob.glob(f"{out_dir}/*.csv")
     hash = hashlib.sha256()
