@@ -107,3 +107,11 @@ Here’s the confusion matrix for this run:
 - Validation split is used for threshold selection
 - Test split is used for final reporting
 - We keep this evaluation logic fixed in Milestone 3, but reselect the threshold after switching to embeddings
+
+## CLI Inference
+
+```bash
+uv run python scripts/verify_pair.py \
+  --image-a George_W_Bush/George_W_Bush_0001.jpg \
+  --image-b George_W_Bush/George_W_Bush_0002.jpg \
+  --threshold x.xx
