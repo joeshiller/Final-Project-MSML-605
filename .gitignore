@@ -14,6 +14,14 @@ Thumbs.db
 .cache/
 .jj
 
+# Where we cache UV's packages.
+.uv_cache
+# We download our python installs here. This way,
+# the Docker container doesn't download python every time,
+# and we are 100% sure Docker and the host system would
+# use the same python version.
+.python-installs
+
 # Where built python wheels go
 dist
 
