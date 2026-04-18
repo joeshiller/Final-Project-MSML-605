@@ -8,6 +8,16 @@ This repository ingests and processes the LFW dataset.
 - `scripts` - Where higher-level scripts that call into `src/` go.
 - `input-data/` - Where downloaded data is stored.
 - `output-data/` - Where outputed data goes.
+  - `data-source.json` - A description of the current data stored in `input-data/`. # TODO: should this go in input-data/ ?
+  - `runs/` - Where all runs live.
+    - `run_<run UUID>` - Basic information about the run.
+      - `run_<run UUID>.json` - Description of the run.
+      - `pairs_{test, train, val}.csv`
+      - `test_identities.csv`
+      - `test_scores.csv`
+      - `threshold_sweep_val.csv`
+      - `{test, train, val}_identities.csv`
+      - `{test, train, val}_scores.csv`
 - `configs/` - Where configuration files go.
 - `tests/` - Where unit and integration tests go.
 
@@ -24,11 +34,32 @@ Download and ingest the LFW dataset.
 uv run scripts/ingest_lfw.py
 ```
 
-## Run `make_pairs`
+## Create Run
+
+
+## Run Preprocess
 Split the dataset.
 ```sh
 uv run scripts/make_pairs.py
 ```
+
+## Generate Embeddings
+
+
+## Run `score_pairs`
+Compute Euclidean-distance scores for each validation pair.
+```sh
+uv run scripts/score_pairs.py --split=[train | val | test]
+```
+## Run `thresholds`
+Run a threshold sweep.
+```sh
+uv run scripts/thresholds.py "Some description of the run"
+```
+
+## Calculate Confidence
+
+## Load test
 
 ## Run `benchmark`
 Show that Numpy is faster than Python.
@@ -36,17 +67,6 @@ Show that Numpy is faster than Python.
 uv run scripts/benchmark.py
 ```
 
-## Run `score_pairs`
-Compute Euclidean-distance scores for each validation pair.
-```sh
-uv run scripts/score_pairs.py --split=[train | val | test]
-```
-
-## Run `thresholds`
-Run a threshold sweep.
-```sh
-uv run scripts/thresholds.py "Some description of the run"
-```
 
 ## Run the tests
 ```sh

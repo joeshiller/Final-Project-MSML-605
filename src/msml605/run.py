@@ -40,12 +40,12 @@ class Run(BaseModel):
     commit_hash: str
     config: msml605.config.Config
 
-    data_version: str
-    "SHA256 hash of the CSVs in the output directory."
+    # data_version: str
+    # "SHA256 hash of all input configurations."  # TODO: do this!
 
-    threshold_info: RunConfig
+    # threshold_info: RunConfig
 
-    metrics: RunMetrics
+    # metrics: RunMetrics
 
     change_description: str
     "What changed?"
@@ -53,8 +53,8 @@ class Run(BaseModel):
 
 def create_run(
     config: msml605.config.Config,
-    threshold_info: RunConfig,
-    metrics: RunMetrics,
+    # threshold_info: RunConfig,
+    # metrics: RunMetrics,
     change_description: str,
 ) -> Run:
     return Run(
@@ -62,9 +62,9 @@ def create_run(
         timestamp=datetime.datetime.now(datetime.timezone.utc),
         commit_hash=get_git_commit_hash(),  # TODO: check if there are any staged changes.
         config=config,
-        data_version=get_fingerprint_of_data(config),
-        threshold_info=threshold_info,
-        metrics=metrics,
+        # data_version=get_fingerprint_of_data(config),
+        # threshold_info=threshold_info,
+        # metrics=metrics,
         change_description=change_description,
     )
 
@@ -95,19 +95,24 @@ def get_fingerprint_of_data(config: msml605.config.Config) -> str:
 
 
 def write_run(run: Run, run_dir: Path) -> str:
-    "Writes the run. Returns the path of the file that was written."
-    # Create all directories up to the file.
+    "Writes the run. Returns the path of the dir that was written."
+    id = run.id
+    run_name = f"run_{str(id)}"
+    # Create all directories up to the dir.
+
     os.makedirs(run_dir, exist_ok=True)
 
-    id = run.id
-    out_file_name = f"run_{str(id)}.json"
-    out_file_path = run_dir / out_file_name
+    # This should be unique!
+    os.makedirs(run_dir / run_name, exist_ok=False)
+
+    out_file_name = f"{run_name}.json"
+    out_file_path = run_dir / run_name / out_file_name
 
     if os.path.exists(out_file_path):
         logger.error("Run file already exists!", out_file_path=out_file_path)
         raise Exception("Run file already exists.")
 
     with open(out_file_path, "w") as file:
-        serial_run = run.model_dump_json()
+        serial_run = run.model_dump_json(indent=1)
         file.write(serial_run)
     return out_file_path
