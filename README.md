@@ -109,11 +109,13 @@ Using the same settings as Milestone 2, the threshold sweep yields a baseline th
 of `1f69fdcd-dc01-4ef6-b504-4d17bafc91c0`.
 
 ## CLI Inference
-
+```sh
 uv run python scripts/verify_pair.py \
   --image-a George_W_Bush/George_W_Bush_0001.jpg \
   --image-b George_W_Bush/George_W_Bush_0002.jpg \
-  --threshold x.xx 
+  --threshold 0.9512748293069379
+
+  ```
 
 
 ## Confidence
@@ -122,4 +124,26 @@ uv run python scripts/verify_pair.py \
 - predictions closer to the threshold get lower confidence
 
 
+## Load Test
+uv run python scripts/load_test.py --split val --num-pairs 20 --workers 4 --threshold `0.9512748293069379`
 
+
+## Milestone 3 Inference Pipeline
+1. loads both images
+2. preprocesses both images deterministically
+3. generates one embedding per image using `InceptionResnetV1` from `facenet-pytorch`
+4. computes Euclidean distance between embeddings
+5. applies the selected operating threshold
+6. computes confidence as `normalized(|score - threshold|)`
+7. reports latency for that inference
+
+
+## Docker
+
+
+## Artifact Locations
+
+- scored pairs: `output-data/`
+- threshold sweep output: `output-data/threshold_sweep_val.csv`
+- load-test summary: `output-data/load_test_summary.json`
+- tracked runs: `fixed-runs/`
