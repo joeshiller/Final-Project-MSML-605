@@ -128,7 +128,7 @@ uv run python scripts/verify_pair.py \
 uv run python scripts/load_test.py --split val --num-pairs 20 --workers 4 --threshold `0.9512748293069379`
 
 
-## Milestone 3 Inference Pipeline
+## Milestone 3 Inference Pipeline and Model
 1. loads both images
 2. preprocesses both images deterministically
 3. generates one embedding per image using `InceptionResnetV1` from `facenet-pytorch`
@@ -139,6 +139,37 @@ uv run python scripts/load_test.py --split val --num-pairs 20 --workers 4 --thre
 
 
 ## Docker
+
+## Docker
+- Build the image
+```sh
+docker build -t msml605-m3 .
+``` 
+- CLI
+```sh
+docker run --rm msml605-m3
+```
+- Run pair inference and load test
+```sh
+docker run --rm \
+  -v "$(pwd)/input-data:/work/input-data" \
+  -v "$(pwd)/output-data:/work/output-data" \
+  msml605-m3 \
+  uv run --no-sync python scripts/verify_pair.py \
+    --image-a George_W_Bush/George_W_Bush_0001.jpg \
+    --image-b George_W_Bush/George_W_Bush_0002.jpg \
+    --threshold 0.9512748293069379
+
+docker run --rm \
+  -v "$(pwd)/input-data:/work/input-data" \
+  -v "$(pwd)/output-data:/work/output-data" \
+  msml605-m3 \
+  uv run --no-sync python scripts/load_test.py \
+    --split val \
+    --num-pairs 20 \
+    --workers 4 \
+    --threshold 0.9512748293069379
+```
 
 
 ## Artifact Locations
