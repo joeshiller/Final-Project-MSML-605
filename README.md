@@ -43,7 +43,7 @@ scripts/run-container.sh uv run scripts/benchmark.py
 ## Run `score_pairs`
 Compute Euclidean-distance scores for each validation pair.
 ```sh
-scripts/run-container.sh uv run scripts/score_pairs.py --split=[train | val | test]
+scripts/run-container.sh uv run scripts/score_pairs.py --split= [train | val | test]
 ```
 
 ## Run `thresholds`
@@ -158,7 +158,7 @@ docker run --rm \
   uv run --no-sync python scripts/verify_pair.py \
     --image-a George_W_Bush/George_W_Bush_0001.jpg \
     --image-b George_W_Bush/George_W_Bush_0002.jpg \
-    --threshold 0.9512748293069379
+    --threshold 0.9010818501551252
 
 docker run --rm \
   -v "$(pwd)/input-data:/work/input-data" \
@@ -168,7 +168,7 @@ docker run --rm \
     --split val \
     --num-pairs 20 \
     --workers 4 \
-    --threshold 0.9512748293069379
+    --threshold 0.9010818501551252
 ```
 
 
@@ -178,3 +178,16 @@ docker run --rm \
 - threshold sweep output: `output-data/threshold_sweep_val.csv`
 - load-test summary: `output-data/load_test_summary.json`
 - tracked runs: `fixed-runs/`
+
+
+## Final Milestone 4 System Version
+
+The final system is the Milestone 3 embedding-based face verifier using `InceptionResnetV1` from `facenet-pytorch`. The system computes Euclidean distance between image embeddings.
+
+Final operating threshold: `0.9010818501551252`
+Final balanced accuracy: `0.98249`
+
+This threshold was selected on the validation split by maximizing balanced accuracy. Because the score is distance-based, lower scores mean the two images are more likely to show the same identity. The system predicts same identity when distance <= 0.9010818501551252
+
+
+

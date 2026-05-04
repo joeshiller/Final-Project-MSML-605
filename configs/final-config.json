@@ -1,0 +1,35 @@
+{
+  "seed": 123,
+  "input_dir": "input-data",
+  "output_dir": "output-data",
+  "run_dir": "improved",
+  "pair_policy": {
+    "train": {
+      "num_pos": 1000,
+      "num_neg": 1000,
+      "max_pos_pairs_per_identity": 20
+    },
+    "val": {
+      "num_pos": 200,
+      "num_neg": 200,
+      "max_pos_pairs_per_identity": 5
+    },
+    "test": {
+      "num_pos": 200,
+      "num_neg": 200,
+      "max_pos_pairs_per_identity": 5
+    }
+  },
+  "inference": {
+    "model": "InceptionResnetV1",
+    "pretrained": "vggface2",
+    "score_type": "euclidean_distance",
+    "threshold": 0.9010818501551252,
+    "threshold_selection_split": "val",
+    "threshold_selection_rule": "maximize_balanced_accuracy",
+    "prediction_rule": "same_identity_if_distance_less_than_or_equal_to_threshold",
+    "validation_metrics_at_threshold": {
+      "balanced_accuracy": 0.98249
+    }
+  }
+}
