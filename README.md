@@ -49,7 +49,7 @@ scripts/run-container.sh uv run scripts/score_pairs.py --split= [train | val | t
 ## Run `thresholds`
 Run a threshold sweep.
 ```sh
-scripts/run-container.sh uv run scripts/thresholds.py "Some description of the run"
+scripts/run-container.sh uv run scripts/thresholds.py "Description"
 ```
 
 ## Run the tests
@@ -107,6 +107,7 @@ Here’s the confusion matrix for this run:
 # Milestone 3 Baseline
 Using the same settings as Milestone 2, the threshold sweep yields a baseline threshold of `0.9512748293069379`. The run is located in `fixed-run/` with an id
 of `1f69fdcd-dc01-4ef6-b504-4d17bafc91c0`.
+
 
 ## CLI Inference
 ```sh
@@ -184,8 +185,12 @@ docker run --rm \
 
 The final system is the Milestone 3 embedding-based face verifier using `InceptionResnetV1` from `facenet-pytorch`. The system computes Euclidean distance between image embeddings.
 
+The run is located in `fixed-runs/` in with an id of `34355db8-e23a-4d08-8379-6581c2001aa7`
+
 Final operating threshold: `0.9010818501551252`
 Final balanced accuracy: `0.98249`
+Accuracy: 0.9825
+tp: 195 | tn: 198  |fp: 2 | fn: 5
 
 This threshold was selected on the validation split by maximizing balanced accuracy. Because the score is distance-based, lower scores mean the two images are more likely to show the same identity. The system predicts same identity when distance <= 0.9010818501551252
 
