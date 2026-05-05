@@ -4,8 +4,8 @@
   "output_dir": "output-data",
   "run_dir": "runs",
   "pair_policy": {
-    "train": { "num_pos": 2000, "num_neg": 2000 },
-    "val": { "num_pos": 400, "num_neg": 400 },
-    "test": { "num_pos": 400, "num_neg": 400 }
+    "train": { "num_pos": 1000, "num_neg": 1000 },
+    "val": { "num_pos": 200, "num_neg": 200 },
+    "test": { "num_pos": 200, "num_neg": 200 }
   }
 }

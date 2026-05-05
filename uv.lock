@@ -124,18 +124,6 @@ wheels = [
 ]
 
 [[package]]
-name = "clustermonitor"
-version = "0.0.7"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "matplotlib" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/6b/86/4ea491ed2805fcfdf5eb918fc70116720f30473c29c27c73f79b174e41a7/ClusterMonitor-0.0.7.tar.gz", hash = "sha256:063928b3ff86662122f139d561a2955cc003716944f9711d984c1e64803dbf04", size = 4016, upload-time = "2021-10-04T17:33:39.946Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/86/f7/535b1289a384d3ff092ea555ec27362ffaae35e68924b8be6b551f1ee687/ClusterMonitor-0.0.7-py3-none-any.whl", hash = "sha256:850acc33a5427f88258c00179dd73dabc0f468af238c606977cd3b8d2dc64709", size = 6433, upload-time = "2021-10-04T17:33:38.697Z" },
-]
-
-[[package]]
 name = "colorama"
 version = "0.4.6"
 source = { registry = "https://pypi.org/simple" }
@@ -732,7 +720,6 @@ name = "msml605"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
-    { name = "clustermonitor" },
     { name = "facenet-pytorch" },
     { name = "kagglehub", extra = ["pandas-datasets"] },
     { name = "loguru" },
@@ -751,7 +738,6 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "clustermonitor", specifier = ">=0.0.7" },
     { name = "facenet-pytorch", specifier = ">=2.5.3" },
     { name = "kagglehub", extras = ["pandas-datasets"], specifier = ">=1.0.0" },
     { name = "loguru", specifier = ">=0.7.3" },
