@@ -4,13 +4,13 @@ from pathlib import Path
 import numpy as np
 import torch
 from facenet_pytorch import InceptionResnetV1
-
 from loguru import logger
 from PIL import Image
 
 from msml605.similarity import euclidean_distance_batch
 
 resnet = InceptionResnetV1(pretrained="vggface2").eval()
+
 
 def load_pairs_csv(path):
     rows = []
@@ -19,7 +19,6 @@ def load_pairs_csv(path):
         for row in reader:
             rows.append(row)
     return rows
-
 
 
 def load_image(image_path, image_root):
