@@ -194,5 +194,15 @@ tp: 195 | tn: 198  |fp: 2 | fn: 5
 
 This threshold was selected on the validation split by maximizing balanced accuracy. Because the score is distance-based, lower scores mean the two images are more likely to show the same identity. The system predicts same identity when distance <= 0.9010818501551252
 
+## Final Milestone 4 Reports
 
+- System Card: `reports/system_card.md`
+
+- Profiling Report: `reports/profiling_report.md`
+
+- Reproducibility Checklist: `reports/reproducibility_checklist.md`
+
+- Final config: `configs/final_config.json`
+
+- Final Git tag: `v1.0-final`
 

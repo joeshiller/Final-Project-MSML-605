@@ -122,6 +122,6 @@ Supporting docs:
 
 - `reports/system_card.md`
 
-- `reports/`
+- `reports/profiling.md`
 
 - `reports/`
